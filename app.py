@@ -1,11 +1,9 @@
-from types import MethodDescriptorType
-from flask import Flask, render_template, flash, redirect, render_template
-from flask.json import jsonify
-from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, Pet
+from flask import Flask, url_for, render_template, redirect, flash, jsonify
 
-from forms import AddPetForm
-from forms import UserForm
+from flask_debugtoolbar import DebugToolbarExtension
+
+from models import db, connect_db, Pet
+from forms import AddPetForm, EditPetForm
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "oh-so-secret"
@@ -15,6 +13,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 debug = DebugToolbarExtension(app)
 
 connect_db(app)
+db.create_all()
+
+toolbar = DebugToolbarExtension(app)
+
 
 
 @app.route("/")
@@ -25,7 +27,7 @@ def homepage():
 
 
 @app.route("/add", methods=["GET", "POST"])
-def add_snack():
+def add_pet():
     """form for adding pets."""
 
     form = AddPetForm()
@@ -36,7 +38,7 @@ def add_snack():
         
         db.session.add(new_pet)
         db.session.commit()
-        flash(f"{new_pet.name} addeds.")
+        flash(f"{new_pet.name} added.")
         return redirect('/')
 
     else:

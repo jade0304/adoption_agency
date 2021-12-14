@@ -1,11 +1,10 @@
-"""Demo file showing off a model for SQLAlchemy."""
+"""Models for adopt pet app."""
 
 from flask_sqlalchemy import SQLAlchemy
 
 GENERIC_IMAGE = "https://mylostpetalert.com/wp-content/themes/mlpa-child/images/nophoto.gif"
 
 db = SQLAlchemy()
-
 
 def connect_db(app):
     """Connect to database."""
